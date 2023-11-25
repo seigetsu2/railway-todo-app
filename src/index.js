@@ -1,13 +1,14 @@
-import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { CookiesProvider } from "react-cookie";
 import { Provider } from "react-redux";
-import { store } from "./store"
+import { store } from "./store";
 
-ReactDOM.render(
+const container = document.getElementById("root");
+const root = ReactDOM.createRoot(container);
+root.render(
   <Provider store={store}>
     <CookiesProvider>
       <App />
