@@ -126,6 +126,20 @@ export const Home = () => {
 const Tasks = (props) => {
   const { tasks, selectListId, isDoneDisplay } = props;
   if (tasks === null) return <></>;
+  const leftDays = (limit) => {
+    const date = new Date(limit);
+    const now = new Date();
+    const diffTime = date.getTime() - now.getTime();
+    const diffDay = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+    return diffDay;
+  };
+  const leftHours = (limit) => {
+    const date = new Date(limit);
+    const now = new Date();
+    const diffTime = date.getTime() - now.getTime();
+    const diffDay = Math.floor(diffTime / (1000 * 60 * 60));
+    return diffDay;
+  };
 
   if (isDoneDisplay == "done") {
     return (
@@ -141,6 +155,9 @@ const Tasks = (props) => {
                 className="task-item-link"
               >
                 {task.title}
+                <br />
+                期限:{new Date(task.limit).toLocaleString()} 残り日時:
+                {leftDays(task.limit)}日{leftHours(task.limit)}時間
                 <br />
                 {task.done ? "完了" : "未完了"}
               </Link>
@@ -163,6 +180,9 @@ const Tasks = (props) => {
               className="task-item-link"
             >
               {task.title}
+              <br />
+              期限:{new Date(task.limit).toLocaleString()} 残り日時:
+              {leftDays(task.limit)}日{leftHours(task.limit)}時間
               <br />
               {task.done ? "完了" : "未完了"}
             </Link>
