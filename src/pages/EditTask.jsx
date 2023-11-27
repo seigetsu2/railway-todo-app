@@ -19,7 +19,7 @@ export const EditTask = () => {
   const handleDetailChange = (e) => setDetail(e.target.value);
   const handleIsDoneChange = (e) => setIsDone(e.target.value === "done");
   const handleLimitChange = (e) => {
-    const date = e.target.value + ":00Z";
+    const date = new Date(e.target.value).toISOString().split(".")[0] + "Z";
     setLimit(date);
   };
   const onUpdateTask = () => {

@@ -18,7 +18,7 @@ export const NewTask = () => {
   const handleTitleChange = (e) => setTitle(e.target.value);
   const handleDetailChange = (e) => setDetail(e.target.value);
   const handleLimitChange = (e) => {
-    const date = e.target.value + ":00Z";
+    const date = new Date(e.target.value).toISOString().split(".")[0] + "Z";
     setLimit(date);
   };
   const handleSelectList = (id) => setSelectListId(id);

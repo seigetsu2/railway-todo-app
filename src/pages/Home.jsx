@@ -138,8 +138,8 @@ const Tasks = (props) => {
     const date = new Date(limit);
     const now = new Date();
     const diffTime = date.getTime() - now.getTime();
-    const diffDay = Math.floor(diffTime / (1000 * 60 * 60));
-    return diffDay;
+    const diffHour = Math.floor(diffTime / (1000 * 60 * 60)) % 24;
+    return diffHour;
   };
 
   if (isDoneDisplay == "done") {
