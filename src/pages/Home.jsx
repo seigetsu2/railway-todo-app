@@ -88,6 +88,7 @@ export const Home = () => {
               return (
                 <li
                   key={key}
+                  tabIndex="0"
                   className={`list-tab-item ${isActive ? "active" : ""}`}
                   onClick={() => handleSelectList(list.id)}
                 >

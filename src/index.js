@@ -6,6 +6,12 @@ import { CookiesProvider } from "react-cookie";
 import { Provider } from "react-redux";
 import { store } from "./store";
 
+document.onkeydown = (e) => {
+  // The Enter/Return key
+  if (e.key === "Enter") {
+    document.activeElement.click();
+  }
+};
 const container = document.getElementById("root");
 const root = ReactDOM.createRoot(container);
 root.render(
