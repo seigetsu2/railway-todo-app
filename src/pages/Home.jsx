@@ -64,7 +64,7 @@ export const Home = () => {
       });
   };
   return (
-    <div>
+    <div className="content">
       <Header />
       <main className="taskList">
         <p className="error-message">{errorMessage}</p>

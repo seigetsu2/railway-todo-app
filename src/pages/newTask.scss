@@ -32,3 +32,29 @@
 .error-message {
   color: #ff3333;
 }
+@media screen and (max-width: 768px) {
+  .new-task {
+    width: 700px;
+    margin: 0 auto;
+  }
+  .new-task-select-list,
+  .new-task-title,
+  .new-task-limit,
+  .new-task-detail {
+    width: 650px;
+    margin-left: 1px;
+    margin-top: 1px;
+  }
+}
+@media screen and (max-width: 320px) {
+  .new-task {
+    width: 300px;
+    margin: 0 auto;
+  }
+  .new-task-select-list,
+  .new-task-title,
+  .new-task-limit,
+  .new-task-detail {
+    width: 250px;
+  }
+}

@@ -2,6 +2,12 @@
   margin: 50px auto;
   list-style: none;
   width: 1000px;
+  height: 100%;
+}
+.content {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
 }
 
 .list-header {
@@ -63,6 +69,7 @@
 }
 
 .error-message {
+  width: 100%;
   color: #ff3333;
 }
 
@@ -73,4 +80,30 @@
 
 .display-select {
   width: 100%;
+}
+@media screen and (max-width: 768px) {
+  .taskList {
+    width: 700px;
+    height: 100%;
+    margin: 0 auto;
+  }
+}
+@media screen and (max-width: 320px) {
+  .taskList {
+    width: 300px;
+    height: 100%;
+    margin: 0 auto;
+  }
+  .list-tab {
+    flex-direction: column;
+  }
+  .list-tab-item {
+    margin-top: 3px;
+  }
+  .tasks {
+    margin-top: 10px;
+  }
+  .task-item {
+    height: 100px;
+  }
 }

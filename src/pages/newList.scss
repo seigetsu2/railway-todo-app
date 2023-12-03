@@ -21,3 +21,22 @@
   height: 40px;
   border-radius: 5px;
 }
+@media screen and (max-width: 768px) {
+  .new-list {
+    width: 700px;
+    margin: 0 auto;
+  }
+  .new-list-title {
+    width: 650px;
+    margin-left: 2px;
+  }
+}
+@media screen and (max-width: 320px) {
+  .new-list {
+    width: 300px;
+    margin: 0 auto;
+  }
+  .new-list-title {
+    width: 250px;
+  }
+}
