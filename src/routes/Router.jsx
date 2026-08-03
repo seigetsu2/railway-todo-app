@@ -1,6 +1,6 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom'
+import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom'
 import { Sidebar } from '~/components/Sidebar'
 import Home from '~/pages/index.page'
 import NotFound from '~/pages/404'
@@ -18,40 +18,26 @@ export const Router = () => {
     <BrowserRouter>
       <Sidebar />
       <div className="main_content">
-        <Switch>
-          <Route exact path="/signin">
-            <SignIn />
-          </Route>
-          <Route exact path="/signup">
-            <SignUp />
-          </Route>
-          {auth ? (
-            <>
-              <Route exact path="/">
-                <Home />
-              </Route>
-              <Route exact path="/lists/:listId">
-                <ListIndex />
-              </Route>
-              <Route exact path="/list/new">
-                <NewList />
-              </Route>
-              <Route exact path="/lists/:listId/tasks/:taskId">
-                <EditTask />
-              </Route>
-              <Route exact path="/lists/:listId/edit">
-                <EditList />
-              </Route>
-            </>
-          ) : (
-            <Route path="/">
-              <Redirect to="/signin" />
-            </Route>
-          )}
-          <Route path="*">
-            <NotFound />
-          </Route>
-        </Switch>
+        <Routes>
+          <Route path="/signin" element={<SignIn />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/" element={
+            auth ? <Home /> : <Navigate replace to="/signin"/>
+          } />
+          <Route path="/lists/:listId" element={
+            auth ? <ListIndex /> : <Navigate replace to="/signin"/>
+          } />
+          <Route path="/list/new" element={
+            auth ? <NewList /> : <Navigate replace to="/signin"/>
+          } />
+          <Route path="/lists/:listId/tasks/:taskId" element={
+            auth ? <EditTask /> : <Navigate replace to="/signin"/>
+          } />
+          <Route path="/lists/:listId/edit" element={
+            auth ? <EditList /> : <Navigate replace to="/signin"/>
+          } />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
       </div>
     </BrowserRouter>
   )
