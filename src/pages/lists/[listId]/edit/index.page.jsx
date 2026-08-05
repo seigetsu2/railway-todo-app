@@ -5,6 +5,7 @@ import { BackButton } from "~/components/BackButton";
 import "./index.css";
 import { fetchLists, updateList, deleteList } from "~/store/list";
 import { useId } from "~/hooks/useId";
+import { AppButton } from "~/components/AppButton";
 
 const EditList = () => {
   const id = useId();
@@ -90,21 +91,16 @@ const EditList = () => {
           />
         </fieldset>
         <div className="edit_list__form_actions">
-          <Link to="/" data-variant="secondary" className="app_button">
-            Cancel
-          </Link>
+          <AppButton priority="secondary" asChild>
+            <Link to="/">Cancel</Link>
+          </AppButton>
           <div className="edit_list__form_actions_spacer"></div>
-          <button
-            type="button"
-            className="app_button edit_list__form_actions_delete"
-            disabled={isSubmitting}
-            onClick={handleDelete}
-          >
+          <AppButton type="button" disabled={isSubmitting} onClick={handleDelete} color="red">
             Delete
-          </button>
-          <button type="submit" className="app_button" disabled={isSubmitting}>
+          </AppButton>
+          <AppButton type="submit" className="app_button" disabled={isSubmitting}>
             Update
-          </button>
+          </AppButton>
         </div>
       </form>
     </main>

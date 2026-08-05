@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { useLogin } from "~/hooks/useLogin";
 import { useId } from "~/hooks/useId";
 import "./index.css";
+import { AppButton } from "~/components/AppButton";
 
 const SignIn = () => {
   const auth = useSelector((state) => state.auth.token !== null);
@@ -69,13 +70,13 @@ const SignIn = () => {
           />
         </fieldset>
         <div className="signin__form_actions">
-          <Link className="app_button" data-variant="secondary" to="/signup">
-            Register
-          </Link>
+          <AppButton priority="secondary" asChild>
+            <Link to="/signup">Register</Link>
+          </AppButton>
           <div className="signin__form_actions_spacer"></div>
-          <button type="submit" className="app_button" disabled={isSubmitting}>
+          <AppButton type="submit" disabled={isSubmitting}>
             Login
-          </button>
+          </AppButton>
         </div>
       </form>
     </main>

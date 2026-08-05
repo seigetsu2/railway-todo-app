@@ -3,6 +3,8 @@ import { useDispatch } from "react-redux";
 import "./TaskCreateForm.css";
 import { CheckIcon } from "~/icons/CheckIcon";
 import { createTask } from "~/store/task";
+import { AppButton } from "./AppButton";
+import { ToggleButton } from "./ToggleButton";
 
 export const TaskCreateForm = () => {
   const dispatch = useDispatch();
@@ -88,21 +90,12 @@ export const TaskCreateForm = () => {
   return (
     <form ref={refForm} className="task_create_form" onSubmit={onSubmit} data-state={formState}>
       <div className="task_create_form__title_container">
-        <button
-          type="button"
+        <ToggleButton
           onClick={handleToggle}
-          className="task_create_form__mark_button"
           onFocus={handleFocus}
           onBlur={handleBlur}
-        >
-          {done ? (
-            <div className="task_create_form__mark____complete" aria-label="Completed">
-              <CheckIcon className="task_create_form__mark____complete_check" />
-            </div>
-          ) : (
-            <div className="task_create_form__mark____incomplete" aria-label="Incomplete"></div>
-          )}
-        </button>
+          done={done}
+        ></ToggleButton>
         <input
           type="text"
           className="task_create_form__title"
@@ -127,25 +120,24 @@ export const TaskCreateForm = () => {
             disabled={formState === "submitting"}
           />
           <div className="task_create_form__actions">
-            <button
+            <AppButton
               type="button"
-              className="app_button"
               data-variant="secondary"
               onBlur={handleBlur}
               onClick={handleDiscard}
               disabled={(!title && !detail) || formState === "submitting"}
             >
               Discard
-            </button>
+            </AppButton>
             <div className="task_create_form__spacer"></div>
-            <button
+            <AppButton
               type="submit"
               className="app_button"
               onBlur={handleBlur}
               disabled={!title || !detail || formState === "submitting"}
             >
               Add
-            </button>
+            </AppButton>
           </div>
         </div>
       )}
