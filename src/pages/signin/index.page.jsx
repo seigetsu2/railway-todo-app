@@ -4,6 +4,8 @@ import { useSelector } from "react-redux";
 import { useLogin } from "~/hooks/useLogin";
 import { useId } from "~/hooks/useId";
 import "./index.css";
+import { AppButton } from "~/components/AppButton";
+import { TextField } from "~/components/TextField";
 
 const SignIn = () => {
   const auth = useSelector((state) => state.auth.token !== null);
@@ -46,11 +48,10 @@ const SignIn = () => {
           <label htmlFor={`${id}-email`} className="signin__form_label">
             E-mail Address
           </label>
-          <input
+          <TextField
             id={`${id}-email`}
             type="email"
             autoComplete="email"
-            className="app_input"
             value={email}
             onChange={(event) => setEmail(event.target.value)}
           />
@@ -59,23 +60,22 @@ const SignIn = () => {
           <label htmlFor={`${id}-password`} className="signin__form_label">
             Password
           </label>
-          <input
+          <TextField
             id={`${id}-password`}
             type="password"
             autoComplete="current-password"
-            className="app_input"
             value={password}
             onChange={(event) => setPassword(event.target.value)}
           />
         </fieldset>
         <div className="signin__form_actions">
-          <Link className="app_button" data-variant="secondary" to="/signup">
-            Register
-          </Link>
+          <AppButton priority="secondary" asChild>
+            <Link to="/signup">Register</Link>
+          </AppButton>
           <div className="signin__form_actions_spacer"></div>
-          <button type="submit" className="app_button" disabled={isSubmitting}>
+          <AppButton type="submit" disabled={isSubmitting}>
             Login
-          </button>
+          </AppButton>
         </div>
       </form>
     </main>

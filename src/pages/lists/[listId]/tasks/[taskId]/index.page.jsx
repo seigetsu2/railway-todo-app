@@ -2,6 +2,8 @@ import { useCallback, useState, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { BackButton } from "~/components/BackButton";
+import { AppButton } from "~/components/AppButton";
+import { TextField } from "~/components/TextField";
 import "./index.css";
 import { setCurrentList } from "~/store/list";
 import { fetchTasks, updateTask, deleteTask } from "~/store/task";
@@ -87,9 +89,8 @@ const EditTask = () => {
           <label htmlFor={`${id}-title`} className="edit_list__form_label">
             Title
           </label>
-          <input
+          <TextField
             id={`${id}-title`}
-            className="app_input"
             placeholder="Buy some milk"
             value={title}
             onChange={(event) => setTitle(event.target.value)}
@@ -99,9 +100,9 @@ const EditTask = () => {
           <label htmlFor={`${id}-detail`} className="edit_list__form_label">
             Description
           </label>
-          <textarea
+          <TextField
+            multiLine
             id={`${id}-detail`}
-            className="app_input"
             placeholder="Blah blah blah"
             value={detail}
             onChange={(event) => setDetail(event.target.value)}
@@ -121,21 +122,16 @@ const EditTask = () => {
           </div>
         </fieldset>
         <div className="edit_list__form_actions">
-          <Link to="/" data-variant="secondary" className="app_button">
-            Cancel
-          </Link>
+          <AppButton priority="secondary" asChild>
+            <Link to="/">Cancel</Link>
+          </AppButton>
           <div className="edit_list__form_actions_spacer"></div>
-          <button
-            type="button"
-            className="app_button edit_list__form_actions_delete"
-            disabled={isSubmitting}
-            onClick={handleDelete}
-          >
+          <AppButton type="button" disabled={isSubmitting} onClick={handleDelete} color="red">
             Delete
-          </button>
-          <button type="submit" className="app_button" disabled={isSubmitting}>
+          </AppButton>
+          <AppButton type="submit" disabled={isSubmitting}>
             Update
-          </button>
+          </AppButton>
         </div>
       </form>
     </main>

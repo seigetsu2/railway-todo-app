@@ -45,7 +45,3 @@
 .edit_task__form_actions_spacer {
   flex: 1;
 }
-
-.edit_task__form_actions_delete {
-  --app-button-accent-color: var(--red-500);
-}
