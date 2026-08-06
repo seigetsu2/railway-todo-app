@@ -5,6 +5,7 @@ import "./index.css";
 import { useSignup } from "~/hooks/useSignup";
 import { useId } from "~/hooks/useId";
 import { AppButton } from "~/components/AppButton";
+import { TextField } from "~/components/TextField";
 
 const SignUp = () => {
   const auth = useSelector((state) => state.auth.token !== null);
@@ -49,10 +50,9 @@ const SignUp = () => {
           <label htmlFor={`${id}-email`} className="signup__form_label">
             E-mail Address
           </label>
-          <input
+          <TextField
             id={`${id}-email`}
             autoComplete="email"
-            className="app_input"
             value={email}
             onChange={(event) => setEmail(event.target.value)}
           />
@@ -61,10 +61,8 @@ const SignUp = () => {
           <label htmlFor={`${id}-name`} autoComplete="name" className="signup__form_label">
             Name
           </label>
-          <input
+          <TextField
             id={`${id}-name`}
-            type="text"
-            className="app_input"
             value={name}
             onChange={(event) => setName(event.target.value)}
           />
@@ -77,10 +75,9 @@ const SignUp = () => {
           >
             Password
           </label>
-          <input
+          <TextField
             id={`${id}-password`}
             type="password"
-            className="app_input"
             value={password}
             onChange={(event) => setPassword(event.target.value)}
           />

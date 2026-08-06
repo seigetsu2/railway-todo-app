@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useState, useRef } from "react";
 import { useDispatch } from "react-redux";
 import "./TaskCreateForm.css";
-import { CheckIcon } from "~/icons/CheckIcon";
 import { createTask } from "~/store/task";
 import { AppButton } from "./AppButton";
 import { ToggleButton } from "./ToggleButton";
