@@ -4,6 +4,8 @@ import "./TaskCreateForm.css";
 import { createTask } from "~/store/task";
 import { AppButton } from "./AppButton";
 import { ToggleButton } from "./ToggleButton";
+import { DateInput } from "./DateInput";
+import { UTCToLocal } from "~/utils/dateUtils";
 
 export const TaskCreateForm = () => {
   const dispatch = useDispatch();
@@ -14,8 +16,13 @@ export const TaskCreateForm = () => {
   const [formState, setFormState] = useState("initial");
 
   const [title, setTitle] = useState("");
+  const [limit, setLimit] = useState(getNowLocalDate());
   const [detail, setDetail] = useState("");
   const [done, setDone] = useState(false);
+  function getNowLocalDate() {
+    const date = UTCToLocal(Date.now());
+    return date.toISOString().slice(0, 16);
+  }
 
   const handleToggle = useCallback(() => {
     setDone((prev) => !prev);
@@ -46,6 +53,7 @@ export const TaskCreateForm = () => {
     setTitle("");
     setDetail("");
     setFormState("initial");
+    setLimit(getNowLocalDate());
     setDone(false);
   }, []);
 
@@ -55,7 +63,7 @@ export const TaskCreateForm = () => {
 
       setFormState("submitting");
 
-      void dispatch(createTask({ title, detail, done }))
+      void dispatch(createTask({ title, detail, limit: new Date(limit).toISOString(), done }))
         .unwrap()
         .then(() => {
           handleDiscard();
@@ -65,7 +73,7 @@ export const TaskCreateForm = () => {
           setFormState("focused");
         });
     },
-    [title, detail, done],
+    [title, detail, limit, done],
   );
 
   useEffect(() => {
@@ -118,6 +126,14 @@ export const TaskCreateForm = () => {
             onBlur={handleBlur}
             disabled={formState === "submitting"}
           />
+          <div className="task_create_form__limit">
+            <label htmlFor="datatime_limit">Limit:</label>
+            <DateInput
+              id="datetime_limit"
+              value={limit}
+              onChange={(e) => setLimit(e.target.value)}
+            />
+          </div>
           <div className="task_create_form__actions">
             <AppButton
               type="button"
