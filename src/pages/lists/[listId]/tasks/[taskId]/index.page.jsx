@@ -4,9 +4,11 @@ import { useSelector, useDispatch } from "react-redux";
 import { BackButton } from "~/components/BackButton";
 import { AppButton } from "~/components/AppButton";
 import { TextField } from "~/components/TextField";
+import { DateInput } from "~/components/DateInput";
 import "./index.css";
 import { setCurrentList } from "~/store/list";
 import { fetchTasks, updateTask, deleteTask } from "~/store/task";
+import { UTCToLocal } from "~/utils/dateUtils";
 import { useId } from "~/hooks/useId";
 
 const EditTask = () => {
@@ -18,6 +20,7 @@ const EditTask = () => {
 
   const [title, setTitle] = useState("");
   const [detail, setDetail] = useState("");
+  const [limit, setLimit] = useState("");
   const [done, setDone] = useState(false);
 
   const [errorMessage, setErrorMessage] = useState("");
@@ -29,6 +32,7 @@ const EditTask = () => {
     if (task) {
       setTitle(task.title);
       setDetail(task.detail);
+      setLimit(UTCToLocal(task.limit).toISOString().slice(0, 16));
       setDone(task.done);
     }
   }, [task]);
@@ -44,7 +48,9 @@ const EditTask = () => {
 
       setIsSubmitting(true);
 
-      void dispatch(updateTask({ id: taskId, title, detail, done }))
+      void dispatch(
+        updateTask({ id: taskId, title, detail, limit: new Date(limit).toISOString(), done }),
+      )
         .unwrap()
         .then(() => {
           navigate(`/lists/${listId}`);
@@ -56,7 +62,7 @@ const EditTask = () => {
           setIsSubmitting(false);
         });
     },
-    [title, taskId, listId, detail, done],
+    [title, taskId, listId, detail, limit, done],
   );
 
   const handleDelete = useCallback(() => {
@@ -107,6 +113,18 @@ const EditTask = () => {
             value={detail}
             onChange={(event) => setDetail(event.target.value)}
           />
+        </fieldset>
+        <fieldset className="edit_list__form_field">
+          <label htmlFor={`${id}-limit`} className="edit_list__form_label">
+            Limit
+          </label>
+          <div>
+            <DateInput
+              id={`${id}-limit`}
+              value={limit}
+              onChange={(e) => setLimit(e.target.value)}
+            />
+          </div>
         </fieldset>
         <fieldset className="edit_list__form_field">
           <label htmlFor={`${id}-done`} className="edit_list__form_label">
