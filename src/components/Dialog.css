@@ -1,0 +1,4 @@
+.dialog_modal::backdrop {
+  background-color: --slate-500;
+  backdrop-filter: blur(8px);
+}

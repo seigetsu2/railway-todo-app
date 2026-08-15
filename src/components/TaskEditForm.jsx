@@ -1,47 +1,23 @@
-import { useCallback, useState, useEffect } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { BackButton } from "~/components/BackButton";
-import { AppButton } from "~/components/AppButton";
-import { TextField } from "~/components/TextField";
-import { DateInput } from "~/components/DateInput";
-import "./index.css";
-import { setCurrentList } from "~/store/list";
-import { fetchTasks, updateTask, deleteTask } from "~/store/task";
-import { UTCToLocal } from "~/utils/dateUtils";
+import { useCallback, useState } from "react";
+import { useDispatch } from "react-redux";
+import { updateTask, deleteTask } from "~/store/task";
+import { AppButton } from "./AppButton";
+import { TextField } from "./TextField";
+import { DateInput } from "./DateInput";
 import { useId } from "~/hooks/useId";
+import { UTCToLocal } from "~/utils/dateUtils";
+import "./TaskEditForm.css";
 
-const EditTask = () => {
+export const TaskEditForm = ({ task, handleClose }) => {
   const id = useId();
-
-  const { listId, taskId } = useParams();
-  const navigate = useNavigate();
+  const taskId = task.id;
   const dispatch = useDispatch();
-
-  const [title, setTitle] = useState("");
-  const [detail, setDetail] = useState("");
-  const [limit, setLimit] = useState("");
-  const [done, setDone] = useState(false);
-
+  const [title, setTitle] = useState(task.title);
+  const [detail, setDetail] = useState(task.detail);
+  const [limit, setLimit] = useState(UTCToLocal(task.limit).toISOString().slice(0, 16));
+  const [done, setDone] = useState(task.done);
   const [errorMessage, setErrorMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const task = useSelector((state) => state.task.tasks?.find((task) => task.id === taskId));
-
-  useEffect(() => {
-    if (task) {
-      setTitle(task.title);
-      setDetail(task.detail);
-      setLimit(UTCToLocal(task.limit).toISOString().slice(0, 16));
-      setDone(task.done);
-    }
-  }, [task]);
-
-  useEffect(() => {
-    void dispatch(setCurrentList(listId));
-    void dispatch(fetchTasks());
-  }, [listId]);
-
   const onSubmit = useCallback(
     (event) => {
       event.preventDefault();
@@ -53,7 +29,7 @@ const EditTask = () => {
       )
         .unwrap()
         .then(() => {
-          navigate(`/lists/${listId}`);
+          handleClose();
         })
         .catch((err) => {
           setErrorMessage(err.message);
@@ -62,9 +38,8 @@ const EditTask = () => {
           setIsSubmitting(false);
         });
     },
-    [title, taskId, listId, detail, limit, done],
+    [title, detail, limit, done],
   );
-
   const handleDelete = useCallback(() => {
     if (!window.confirm("Are you sure you want to delete this task?")) {
       return;
@@ -75,7 +50,7 @@ const EditTask = () => {
     void dispatch(deleteTask({ id: taskId }))
       .unwrap()
       .then(() => {
-        navigate(`/`);
+        handleClose();
       })
       .catch((err) => {
         setErrorMessage(err.message);
@@ -84,10 +59,8 @@ const EditTask = () => {
         setIsSubmitting(false);
       });
   }, [taskId]);
-
   return (
-    <main className="edit_list">
-      <BackButton />
+    <div className="edit_task">
       <h2 className="edit_list__title">Edit List</h2>
       <p className="edit_list__error">{errorMessage}</p>
       <form className="edit_list__form" onSubmit={onSubmit}>
@@ -140,8 +113,8 @@ const EditTask = () => {
           </div>
         </fieldset>
         <div className="edit_list__form_actions">
-          <AppButton priority="secondary" asChild>
-            <Link to="/">Cancel</Link>
+          <AppButton priority="secondary" onClick={handleClose} asChild>
+            Cancel
           </AppButton>
           <div className="edit_list__form_actions_spacer"></div>
           <AppButton type="button" disabled={isSubmitting} onClick={handleDelete} color="red">
@@ -152,8 +125,6 @@ const EditTask = () => {
           </AppButton>
         </div>
       </form>
-    </main>
+    </div>
   );
 };
-
-export default EditTask;

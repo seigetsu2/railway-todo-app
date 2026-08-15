@@ -1,37 +1,17 @@
-import { useCallback, useState, useEffect } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { BackButton } from "~/components/BackButton";
-import "./index.css";
-import { fetchLists, updateList, deleteList } from "~/store/list";
+import { useCallback, useState } from "react";
+import { updateList, deleteList } from "~/store/list";
+import { useDispatch } from "react-redux";
 import { useId } from "~/hooks/useId";
 import { AppButton } from "~/components/AppButton";
 import { TextField } from "~/components/TextField";
-
-const EditList = () => {
+import "./ListEditForm.css";
+export const ListEditForm = ({ listId, listTitle, handleClose, onDelete }) => {
   const id = useId();
-
-  const { listId } = useParams();
-  const navigate = useNavigate();
   const dispatch = useDispatch();
-
-  const [title, setTitle] = useState("");
+  const [title, setTitle] = useState(listTitle);
 
   const [errorMessage, setErrorMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const list = useSelector((state) => state.list.lists?.find((list) => list.id === listId));
-
-  useEffect(() => {
-    if (list) {
-      setTitle(list.title);
-    }
-  }, [list]);
-
-  useEffect(() => {
-    void dispatch(fetchLists());
-  }, [listId]);
-
   const onSubmit = useCallback(
     (event) => {
       event.preventDefault();
@@ -41,7 +21,7 @@ const EditList = () => {
       void dispatch(updateList({ id: listId, title }))
         .unwrap()
         .then(() => {
-          navigate(`/lists/${listId}`);
+          handleClose();
         })
         .catch((err) => {
           setErrorMessage(err.message);
@@ -52,7 +32,6 @@ const EditList = () => {
     },
     [title, listId],
   );
-
   const handleDelete = useCallback(() => {
     if (!window.confirm("Are you sure you want to delete this list?")) {
       return;
@@ -63,7 +42,7 @@ const EditList = () => {
     void dispatch(deleteList({ id: listId }))
       .unwrap()
       .then(() => {
-        navigate(`/`);
+        onDelete();
       })
       .catch((err) => {
         setErrorMessage(err.message);
@@ -72,10 +51,8 @@ const EditList = () => {
         setIsSubmitting(false);
       });
   }, []);
-
   return (
-    <main className="edit_list">
-      <BackButton />
+    <div className="edit_list">
       <h2 className="edit_list__title">Edit List</h2>
       <p className="edit_list__error">{errorMessage}</p>
       <form className="edit_list__form" onSubmit={onSubmit}>
@@ -91,8 +68,8 @@ const EditList = () => {
           />
         </fieldset>
         <div className="edit_list__form_actions">
-          <AppButton priority="secondary" asChild>
-            <Link to="/">Cancel</Link>
+          <AppButton priority="secondary" onClick={handleClose}>
+            Cancel
           </AppButton>
           <div className="edit_list__form_actions_spacer"></div>
           <AppButton type="button" disabled={isSubmitting} onClick={handleDelete} color="red">
@@ -103,8 +80,6 @@ const EditList = () => {
           </AppButton>
         </div>
       </form>
-    </main>
+    </div>
   );
 };
-
-export default EditList;

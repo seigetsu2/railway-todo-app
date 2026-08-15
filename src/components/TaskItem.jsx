@@ -1,16 +1,13 @@
 import { useState, useCallback } from "react";
-import { Link, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { PencilIcon } from "~/icons/PencilIcon";
-import { CheckIcon } from "~/icons/CheckIcon";
 import { updateTask } from "~/store/task";
 import { ToggleButton } from "./ToggleButton";
 import "./TaskItem.css";
 
-export const TaskItem = ({ task }) => {
+export const TaskItem = ({ task, handleEdit }) => {
   const dispatch = useDispatch();
 
-  const { listId } = useParams();
   const { id, title, detail, limit, done } = task;
   function utcToLocalDateString(date) {
     return new Date(date).toLocaleString();
@@ -46,9 +43,9 @@ export const TaskItem = ({ task }) => {
           {title}
         </div>
         <div aria-hidden className="task_item__title_spacer"></div>
-        <Link to={`/lists/${listId}/tasks/${id}`} className="task_item__title_action">
+        <button onClick={() => handleEdit(task)} className="task_item__title_action">
           <PencilIcon aria-label="Edit" />
-        </Link>
+        </button>
       </div>
       <div className="task_item__detail">{detail}</div>
       <div className="task_item__detail">
