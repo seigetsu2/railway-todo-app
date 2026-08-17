@@ -2,6 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { Sidebar } from "~/components/Sidebar";
+import { mediaQuery, useMediaQuery } from "~/hooks/useMediaQuery";
 import Home from "~/pages/index.page";
 import NotFound from "~/pages/404";
 import SignIn from "~/pages/signin/index.page";
@@ -11,25 +12,29 @@ import ListIndex from "~/pages/lists/[listId]/index.page";
 
 export const Router = () => {
   const auth = useSelector((state) => state.auth.token !== null);
-
+  const isSp = useMediaQuery(mediaQuery.sp);
   return (
     <BrowserRouter>
-      <Sidebar />
-      <div className="main_content">
-        <Routes>
-          <Route path="/signin" element={<SignIn />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/" element={auth ? <Home /> : <Navigate replace to="/signin" />} />
-          <Route
-            path="/lists/:listId"
-            element={auth ? <ListIndex /> : <Navigate replace to="/signin" />}
-          />
-          <Route
-            path="/list/new"
-            element={auth ? <NewList /> : <Navigate replace to="/signin" />}
-          />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+      <div className="container">
+        <div className="side_content">
+          <Sidebar isSp={isSp} />
+        </div>
+        <div className="main_content">
+          <Routes>
+            <Route path="/signin" element={<SignIn />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/" element={auth ? <Home /> : <Navigate replace to="/signin" />} />
+            <Route
+              path="/lists/:listId"
+              element={auth ? <ListIndex /> : <Navigate replace to="/signin" />}
+            />
+            <Route
+              path="/list/new"
+              element={auth ? <NewList /> : <Navigate replace to="/signin" />}
+            />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </div>
       </div>
     </BrowserRouter>
   );
